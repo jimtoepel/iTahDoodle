@@ -14,10 +14,58 @@
 
 @implementation AppDelegate
 
+#pragma mark - Application delegate callbacks
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    // Create and configuer the UIWindow instance
+    // A CGRect is a struct with an origin (x, y) and a size (width, height)
+    CGRect winFrame = [[UIScreen mainScreen] bounds];
+    UIWindow *theWindow = [[UIWindow alloc] initWithFrame:winFrame];
+    self.window = theWindow;
+
+    // Define the rectangles of the three UI Elements
+    // CGRectMake() creates a CGRect from (x, y, width, height)
+    CGRect tableFrame = CGRectMake(0, 80, winFrame.size.width, winFrame.size.height -100);
+    CGRect fieldFrame = CGRectMake(20, 40, 200, 31);
+    CGRect buttonFrame = CGRectMake(228, 40, 72, 31);
+    
+    // Create and confiure the UITableView
+    self.taskTable = [[UITableView alloc] initWithFrame:tableFrame style:UITableViewStylePlain];
+    self.taskTable.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    // Tell the table view which class to instatniate whenever it
+    // needs to create a new cell
+    [self.taskTable registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+    
+    // Create and configure the UITextField instance where new Tasks will be entered
+    self.taskField = [[UITextField alloc] initWithFrame:fieldFrame];
+    self.taskField.borderStyle = UITextBorderStyleRoundedRect;
+    self.taskField.placeholder = @"Type a task, tap Insert";
+    
+    // Create and configure A ROUDNED RECT Insert button from the the UIButton instance
+    self.insertButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.insertButton.frame = buttonFrame;
+    
+    // Give the button a title
+    [self.insertButton setTitle:@"Insert"
+                       forState:UIControlStateNormal];
+    
+    // Set the target and action for the Insert button
+    [self.insertButton addTarget:self
+                          action:@selector(addTask:)
+                forControlEvents:UIControlEventTouchUpInside];
+    
+    // Add our three UI elements to the window
+    [self.window addSubview:self.taskTable];
+    [self.window addSubview:self.taskField];
+    [self.window addSubview:self.insertButton];
+    
+    // Finalize the window and put it on the screen
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+    
     return YES;
+
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -41,5 +89,28 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
+#pragma mark - Actions
+
+-(void)addTask:(id)sender
+{
+    // Get the Task
+    NSString *text = [self.taskField text];
+    
+    // Quit if the field is empty
+    if ([text length] == 0) {
+        return;
+    }
+    
+    // Log text to console
+    NSLog(@"Task entered: %@", text);
+    
+    // Clear out the text field
+    [self.taskField setText:@""];
+    
+    // Dismiss the keyboard
+    [self.taskField resignFirstResponder];
+}
+
 
 @end
