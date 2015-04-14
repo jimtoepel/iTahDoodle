@@ -11,8 +11,8 @@
 // Helper function to fetch the path to our to-do data stored on disk
 NSString *DocPath()
 {
-    NSArray *pathList = NSSearchPathForDirectoriesInDomains(<#NSSearchPathDirectory directory#>,
-                                                            <#NSSearchPathDomainMask domainMask#>,
+    NSArray *pathList = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                            NSUserDomainMask,
                                                             YES);
     return [pathList[0] stringByAppendingPathComponent:@"data.td"];
 }
