@@ -8,6 +8,15 @@
 
 #import "AppDelegate.h"
 
+// Helper function to fetch the path to our to-do data stored on disk
+NSString *DocPath()
+{
+    NSArray *pathList = NSSearchPathForDirectoriesInDomains(<#NSSearchPathDirectory directory#>,
+                                                            <#NSSearchPathDomainMask domainMask#>,
+                                                            YES);
+    return [pathList[0] stringByAppendingPathComponent:@"data.td"];
+}
+
 @interface AppDelegate ()
 
 @end

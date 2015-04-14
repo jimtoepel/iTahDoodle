@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+// Declare a helper function that will get a path to a location on disk where the to-Do list can be saved
+NSString *DocPath(void);
+
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITableViewDataSource>
 
 @property (strong, nonatomic) UIWindow *window;
