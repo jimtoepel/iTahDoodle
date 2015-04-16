@@ -27,8 +27,16 @@ NSString *DocPath()
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    // Create an empty array to get everything started
-    self.tasks = [NSMutableArray array];
+    
+    // Load an existing dataset or create a new one
+    NSArray *plist = [NSArray arrayWithContentsOfFile:DocPath()];
+    if (plist) {
+        // we have a dataset, copy it into memory
+        self.tasks = [plist mutableCopy];
+    } else {
+        //no dataset, create an empty array
+        self.tasks = [NSMutableArray array];
+    }
     
     // Create and configuer the UIWindow instance
     // A CGRect is a struct with an origin (x, y) and a size (width, height)
@@ -92,6 +100,10 @@ NSString *DocPath()
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+    // Save tasks array to disk
+    [self.tasks writeToFile:DocPath() atomically:YES];
+    
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
